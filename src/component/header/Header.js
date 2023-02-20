@@ -6,7 +6,11 @@ function Header() {
     <div className="header">
       <div className="headerLeft">
         <Link className="link headerIcon" to="/">
-          BLOG LOGO
+          <img
+            className="headerLogoImg"
+            src="https://blog.roblox.com/wp-content/uploads/2022/08/RBLX_Logo_Launch_Wordmark.png"
+            alt=""
+          />
         </Link>
       </div>
       <div className="headerCenter">
@@ -32,7 +36,7 @@ function Header() {
           />
         </Link>
 
-        <ul className="headerList">
+        {/* <ul className="headerList">
           <li className="headerListItem">
             <Link className="link" to="/login">
               LOGIN
@@ -43,7 +47,7 @@ function Header() {
               REGISTER
             </Link>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </div>
   );

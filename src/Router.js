@@ -6,6 +6,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Homepage from "./pages/homepage/Homepage";
 import Write from "./pages/write/Write";
+import Feed from "./component/feed/Feed";
 
 function Router() {
   return (
@@ -13,6 +14,7 @@ function Router() {
       <RecoilRoot>
         <Routes>
           <Route path="/" element={<Homepage />}>
+            <Route index  element={<Feed />} />
             <Route path="Write" element={<Write />} />
           </Route>
           <Route path="/Login" element={<Login />} />
