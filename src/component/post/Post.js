@@ -9,18 +9,18 @@ function Post({img}) {
       <div className="postInfo">
         <div className="postCats">
           <span className="postCat">
-            <Link className="link" to="">
+            <Link className="link" to="/posts?cat=Music">
               Music
             </Link>
           </span>
           <span className="postCat">
-            <Link className="link" to="">
+            <Link className="link" to="/posts?cat=Music">
               Life
             </Link>
           </span>
         </div>
         <span className="postTitle">
-          <Link to="" className="link">
+          <Link to="/post/id" className="link">
             Lorem ipsum dolor sit amet
           </Link>
         </span>

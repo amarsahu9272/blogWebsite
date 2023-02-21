@@ -27,7 +27,7 @@ function Login() {
     );
     if (found) {
       alert(`Welcome ${found.email}`);
-      navigate("../homepage/Homepage");
+      navigate("/");
     } else {
       alert("wrong Credentials");
     }

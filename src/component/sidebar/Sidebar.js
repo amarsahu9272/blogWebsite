@@ -1,6 +1,7 @@
 import React from "react";
 import "./Sidebar.css";
 import { Link } from "react-router-dom";
+import profilePic from '../../utils/Amr.jpg'
 
 function Sidebar() {
   return (
@@ -8,7 +9,7 @@ function Sidebar() {
       <div className="sidebarItem">
         <span className="sidebarTitle">ABOUT ME</span>
         <img
-          src="https://photos.google.com/share/AF1QipMQSadr4_mggszYhg6PvjY2u5UggUhdLcywudDu2s8JzuHbIpUoaDhxoA64-EPuGQ/photo/AF1QipPbuODw3b2UXfK72yLRNVixEsFD58a7HZ0hfIg7?key=cGMwSGgwMmRkaHpYQ2NCZThWNGVQVlU1d0Q2M3dn"
+          src={profilePic}
           alt=""
         />
         <p>
@@ -65,6 +66,9 @@ function Sidebar() {
           </Link>
           <Link className="link" to="https://www.instagram.com/">
             <i className="sidebarIcon fab fa-instagram-square"></i>
+          </Link>
+          <Link className="link" to="/login">
+          <i className="sidebarIcon fa-solid fa-arrow-right-from-bracket"></i>
           </Link>
         </div>
       </div>

@@ -7,6 +7,8 @@ import Register from "./pages/register/Register";
 import Homepage from "./pages/homepage/Homepage";
 import Write from "./pages/write/Write";
 import Feed from "./component/feed/Feed";
+import Single from "./pages/single/Single";
+import Settings from "./pages/settings/Settings";
 
 function Router() {
   return (
@@ -16,6 +18,8 @@ function Router() {
           <Route path="/" element={<Homepage />}>
             <Route index  element={<Feed />} />
             <Route path="Write" element={<Write />} />
+            <Route path="post/:id" element={<Single />} />
+            <Route path="Settings" element={<Settings />} />
           </Route>
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />

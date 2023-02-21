@@ -7,7 +7,9 @@ function Register() {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: "",
+    username:"",
     email: "",
+    tel:"",
     password: "",
   });
   const [formErrors, setFormErrors] = useState({});
@@ -29,7 +31,7 @@ function Register() {
         JSON.parse(localStorage.getItem("registeredUserList")) || [];
       userList.push(formValues);
       localStorage.setItem("registeredUserList", JSON.stringify(userList));
-      navigate("../login/Login")
+      navigate("../login/Login");
     }
   }, [formErrors, isSubmit, formValues, navigate]);
   return (
@@ -39,17 +41,27 @@ function Register() {
       ) : null}
       <span className="registerTitle">Register</span>
       <form className="registerForm" onSubmit={handleSubmit}>
-        <label>Username</label>
+        <label for="name">Name</label>
         <input
           className="registerInput"
           type="text"
           name="name"
-          placeholder="Enter your username..."
+          placeholder="Enter your name..."
           value={formValues.name}
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.name}</p>
-        <label>Email</label>
+        <label for="username">Username</label>
+        <input
+          className="registerInput"
+          type="text"
+          name="username"
+          placeholder="Enter your username..."
+          value={formValues.username}
+          onChange={handleChange}
+        />
+        <p style={{ color: "red" }}>{formErrors.username}</p>
+        <label for="email">Email</label>
         <input
           className="registerInput"
           type="text"
@@ -59,7 +71,18 @@ function Register() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.email}</p>
-        <label>Password</label>
+        <label for="tel">Phone</label>
+        <input
+          className="registerInput"
+          type="tel"
+          name="tel"
+          placeholder="987-654-3210"
+          value={formValues.tel}
+          pattern="[0-9]{10}"
+          onChange={handleChange}
+        />
+        <p style={{ color: "red" }}>{formErrors.tel}</p>
+        <label for="password">Password</label>
         <input
           className="registerInput"
           type="password"
@@ -71,7 +94,7 @@ function Register() {
         <p style={{ color: "red" }}>{formErrors.password}</p>
         <button className="registerButton">Register</button>
       </form>
-      <Link className="link" to='/Login'>
+      <Link className="link" to="/Login">
         <button className="registerLoginButton">Login</button>
       </Link>
     </div>

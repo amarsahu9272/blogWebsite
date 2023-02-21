@@ -1,10 +1,15 @@
 import React from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import profilePic from "../../utils/Amr.jpg";
 function Header() {
+  const navigate = useNavigate();
   return (
     <div className="header">
       <div className="headerLeft">
+        <div className="headerIcon" onClick={() => navigate(-1)}>
+          <i class="fas fa-long-arrow-left"></i>
+        </div>
         <Link className="link headerIcon" to="/">
           <img
             className="headerLogoImg"
@@ -28,12 +33,8 @@ function Header() {
         </ul>
       </div>
       <div className="headerRight">
-        <Link className="link" to="/">
-          <img
-            className="headerImg"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR8MwHno1KFRBl1JJ9nytMzCFdpJEV2YVfQ4rHXpPxRiQTpDGQ57kUFLgm1lpoWxMY_5k&usqp=CAU"
-            alt=""
-          />
+        <Link className="link" to="/settings">
+          <img className="headerImg" src={profilePic} alt="" />
         </Link>
 
         {/* <ul className="headerList">
