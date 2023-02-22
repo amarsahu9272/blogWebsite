@@ -6,17 +6,20 @@ import "./Register.css";
 function Register() {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
+    profilePic: "https://api.dicebear.com/5.x/avataaars/svg",
     name: "",
     username:"",
     email: "",
     tel:"",
     password: "",
+    joinedDate: `${new Date().getMonth() + 1}-2023`,
+    posts:[]
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    setFormValues({ ...formValues, [e.target.name]: e.target.value||"" });
   };
 
   const handleSubmit = (e) => {

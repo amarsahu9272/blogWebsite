@@ -9,6 +9,15 @@ function Login() {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [users, setUsers] = useState([]);
+  // const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // if (Object.keys(formErrors).length === 0 && isSubmit) {
+    // }
+    const loggedUser = JSON.parse(localStorage.getItem("registeredUserList"));
+    loggedUser && setUsers(loggedUser);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,23 +29,27 @@ function Login() {
     setFormErrors(Validate(formValues));
     setIsSubmit(true);
 
-    const loggedUser = JSON.parse(localStorage.getItem("registeredUserList"));
-    const found = loggedUser.find(
+    // const loggedUser = JSON.parse(localStorage.getItem("registeredUserList"));
+    const foundIndex = users.findIndex(
       (user) =>
         user.email === formValues.email && user.password === formValues.password
     );
+    const found = users.find(
+      (user) =>
+        user.email === formValues.email && user.password === formValues.password
+    );
+    console.log(foundIndex);
     if (found) {
       alert(`Welcome ${found.email}`);
+      localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify({ ...users[foundIndex] })
+      );
       navigate("/");
     } else {
       alert("wrong Credentials");
     }
   };
-
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-    }
-  }, [formErrors, isSubmit]);
 
   return (
     <div className="login">

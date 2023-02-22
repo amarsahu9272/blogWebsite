@@ -30,10 +30,11 @@ export const Validate = (values) => {
     errors.email = "*This is not a valid email format!";
   }
 
-  // var phonRegex = /^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/;
-  // if (!values.tel) {
-  //   errors.tel = "*Email is required!";
-  // } else if (whiteSpaceRegex.test(values.tel)) {
+  var phonRegex = /^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}/;
+  if (!values.tel) {
+    errors.tel = "*password is required!";
+  } 
+  // else if (whiteSpaceRegex.test(values.tel)) {
   //   errors.tel = "*email wouldn't have whiteSpace";
   // } else if (phonRegex.test(values.tel)) {
   //   errors.tel = "*This is not a valid email format!";
