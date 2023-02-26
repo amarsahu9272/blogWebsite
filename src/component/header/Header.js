@@ -1,21 +1,21 @@
 import React from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
-import profilePic from "../../utils/Amr.jpg";
-import { useRecoilValue } from "recoil";
-import { isLoginAtom } from "../../RecoilState";
+import { useContext } from "react";
+import { Context } from "../../context/Context";
 function Header() {
+  const PF = "http://localhost:5000/images/";
+  const { user, dispatch } = useContext(Context);
   const navigate = useNavigate();
-  const isuserlogin = useRecoilValue(isLoginAtom);
 
   const handleLogout = () => {
-    navigate('/Register');
+    dispatch({ type: "LOGOUT" });
   };
   return (
     <div className="header">
       <div className="headerLeft">
         <div className="headerIcon" onClick={() => navigate(-1)}>
-          <i class="fas fa-long-arrow-left"></i>
+          <i className="fas fa-long-arrow-left"></i>
         </div>
         <Link className="link headerIcon" to="/">
           <img
@@ -38,16 +38,15 @@ function Header() {
             </Link>
           </li>
           <li className="headerListItem" onClick={handleLogout}>
-            {isuserlogin && "LOGOUT"}
+            {user && "LOGOUT"}
           </li>
         </ul>
       </div>
       <div className="headerRight">
-        {isuserlogin ? (
+        {user ? (
           <Link className="link" to="/settings">
-            <img className="headerImg" src={profilePic} alt="" />
+            <img className="headerImg" src={PF + user.profilePic} alt="" />
           </Link>
-          
         ) : (
           <ul className="headerList">
             <li className="headerListItem">
@@ -62,19 +61,6 @@ function Header() {
             </li>
           </ul>
         )}
-
-        {/* <ul className="headerList">
-          <li className="headerListItem">
-            <Link className="link" to="/login">
-              LOGIN
-            </Link>
-          </li>
-          <li className="headerListItem">
-            <Link className="link" to="/register">
-              REGISTER
-            </Link>
-          </li>
-        </ul> */}
       </div>
     </div>
   );

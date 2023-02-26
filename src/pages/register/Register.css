@@ -4,14 +4,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(rgba(255, 255, 255, 0.5),
+    background: linear-gradient(rgba(255, 255, 255, 0.2),
             rgba(255, 255, 255, 0.5)),
-        url('https://media.gettyimages.com/id/185404583/photo/register.jpg?s=612x612&w=gi&k=20&c=LW6-CUgYAj6NF3a_U0mBI85pxmuWJRpUL99sX7GuCwI=');
+        url('https://i.pinimg.com/originals/ef/b4/a3/efb4a3f247f47954d30a3758ada644c6.jpg');
     background-size: cover;
 }
 
 .registerTitle {
     font-size: 50px;
+}
+label{
+    font-size: 20px;
 }
 
 .registerForm {
@@ -29,6 +32,7 @@
     background-color: white;
     border: none;
     border-radius: 10px;
+    font-size: 15px;
 }
 
 .registerInput:focus {

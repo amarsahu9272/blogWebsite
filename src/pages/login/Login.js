@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { isLoginAtom } from "../../RecoilState";
 import { Validate } from "../../utils/Validate";
+import { Context } from "../../context/Context";
 import axios from "axios";
 import "./Login.css";
 
@@ -12,9 +11,9 @@ function Login() {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const [users, setUsers] = useState([]);
   const [error, setError] = useState(false);
-  const setUserLoginAtom = useSetRecoilState(isLoginAtom);
+  const { dispatch, isFetching } = useContext(Context);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,14 +25,16 @@ function Login() {
     setFormErrors(Validate(formValues));
     setIsSubmit(true);
     setError(false);
+    dispatch({ type: "LOGIN_START" });
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
         username: formValues.username,
         password: formValues.password,
       });
-      setUserLoginAtom(true);
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       res.data && navigate("/");
     } catch (err) {
+      dispatch({ type: "LOGIN_FAILURE" });
       setError(true);
     }
   };
@@ -65,7 +66,7 @@ function Login() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.password}</p>
-        <button className="loginButton">Login</button>
+        <button className="loginButton" type="submit" disabled={isFetching}>Login</button>
       </form>
       <Link className="link" to="/Register">
         <button className="loginRegisterButton">Register</button>

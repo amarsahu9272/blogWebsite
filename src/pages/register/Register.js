@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { json, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Validate } from "../../utils/Validate";
 import axios from "axios";
 import "./Register.css";
@@ -62,9 +62,9 @@ function Register() {
 
   return (
     <div className="register">
-      {/* {Object.keys(formErrors).length === 0 && isSubmit ? (
+      {Object.keys(formErrors).length === 0 && isSubmit ? (
         <div style={{ color: "green" }}>Registered successfully</div>
-      ) : null} */}
+      ) : null}
       <span className="registerTitle">Register</span>
       <form className="registerForm" onSubmit={handleSubmit}>
         <label>Name</label>

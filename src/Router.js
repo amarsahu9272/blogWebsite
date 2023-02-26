@@ -18,7 +18,7 @@ function Router() {
           <Route path="/" element={<Homepage />}>
             <Route index  element={<Feed />} />
             <Route path="Write" element={<Write />} />
-            <Route path="post/:id" element={<Single />} />
+            <Route path="post/:postId" element={<Single />} />
             <Route path="Settings" element={<Settings />} />
           </Route>
           <Route path="/Login" element={<Login />} />

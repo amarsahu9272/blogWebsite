@@ -4,9 +4,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(rgba(255, 255, 255, 0.5),
+    background: linear-gradient(rgba(255, 255, 255, 0.2),
             rgba(255, 255, 255, 0.5)),
-        url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-uiOLrAsWdlwOZ8PVVwlpCJCKtL4HbeVyvQ&usqp=CAU');
+        url('https://img.freepik.com/premium-vector/abstract-colorful-geometric-shape-background-design-template_301033-462.jpg');
     background-size: cover;
 }
 
@@ -29,6 +29,7 @@
     background-color: white;
     border: none;
     border-radius: 10px;
+    font-size: 15px;
 }
 
 .loginInput:focus {

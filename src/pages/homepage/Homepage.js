@@ -6,9 +6,11 @@ import { Outlet } from "react-router-dom";
 function Homepage() {
   return (
     <>
-      <Header />
-      <div className="home">
-        <Outlet />
+      <div>
+        <Header />
+        <div className="home">
+          <Outlet />
+        </div>
       </div>
     </>
   );
