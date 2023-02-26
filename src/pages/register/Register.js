@@ -1,50 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { json, Link, useNavigate } from "react-router-dom";
 import { Validate } from "../../utils/Validate";
+import axios from "axios";
 import "./Register.css";
 
 function Register() {
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     profilePic: "https://api.dicebear.com/5.x/avataaars/svg",
     name: "",
-    username:"",
+    username: "",
     email: "",
-    tel:"",
+    tel: "",
     password: "",
     joinedDate: `${new Date().getMonth() + 1}-2023`,
-    posts:[]
+    posts: [],
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value||"" });
+    setFormValues({ ...formValues, [e.target.name]: e.target.value || "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(Validate(formValues));
     setIsSubmit(true);
+    setError(false);
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
+        name: formValues.name,
+        username: formValues.username,
+        email: formValues.email,
+        tel: formValues.tel,
+        password: formValues.password,
+      });
+      res.data && navigate("../login/Login");
+    } catch (err) {
+      setError(true);
+    }
+
+    // const registerData = await fetch(
+    //   "http://localhost:5000/api/auth/register",
+    //   {
+    //     body: JSON.stringify({
+    //       name: formValues.name,
+    //       username: formValues.username,
+    //       email: formValues.email,
+    //       tel: formValues.tel,
+    //       password: formValues.password,
+    //     }),
+    //     method: "post",
+    //     headers: { "Content-Type": "application/json" },
+    //   }
+    // );
+    // const result = await registerData.json();
+    // console.log(result);
   };
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      let userList =
-        JSON.parse(localStorage.getItem("registeredUserList")) || [];
-      userList.push(formValues);
-      localStorage.setItem("registeredUserList", JSON.stringify(userList));
-      navigate("../login/Login");
-    }
-  }, [formErrors, isSubmit, formValues, navigate]);
   return (
     <div className="register">
-      {Object.keys(formErrors).length === 0 && isSubmit ? (
+      {/* {Object.keys(formErrors).length === 0 && isSubmit ? (
         <div style={{ color: "green" }}>Registered successfully</div>
-      ) : null}
+      ) : null} */}
       <span className="registerTitle">Register</span>
       <form className="registerForm" onSubmit={handleSubmit}>
-        <label for="name">Name</label>
+        <label>Name</label>
         <input
           className="registerInput"
           type="text"
@@ -54,7 +77,7 @@ function Register() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.name}</p>
-        <label for="username">Username</label>
+        <label>Username</label>
         <input
           className="registerInput"
           type="text"
@@ -64,7 +87,7 @@ function Register() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.username}</p>
-        <label for="email">Email</label>
+        <label>Email</label>
         <input
           className="registerInput"
           type="text"
@@ -74,10 +97,10 @@ function Register() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.email}</p>
-        <label for="tel">Phone</label>
+        <label>Phone</label>
         <input
           className="registerInput"
-          type="tel"
+          // type="tel"
           name="tel"
           placeholder="987-654-3210"
           value={formValues.tel}
@@ -85,7 +108,7 @@ function Register() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.tel}</p>
-        <label for="password">Password</label>
+        <label>Password</label>
         <input
           className="registerInput"
           type="password"
@@ -100,6 +123,11 @@ function Register() {
       <Link className="link" to="/Login">
         <button className="registerLoginButton">Login</button>
       </Link>
+      {error && (
+        <span style={{ color: "red", marginTop: "10px" }}>
+          User Already exist!
+        </span>
+      )}
     </div>
   );
 }

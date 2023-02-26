@@ -1,53 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { isLoginAtom } from "../../RecoilState";
 import { Validate } from "../../utils/Validate";
+import axios from "axios";
 import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
-  const initialValues = { email: "", password: "" };
+  const initialValues = { username: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [users, setUsers] = useState([]);
-  // const [userLoggedIn, setUserLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // if (Object.keys(formErrors).length === 0 && isSubmit) {
-    // }
-    const loggedUser = JSON.parse(localStorage.getItem("registeredUserList"));
-    loggedUser && setUsers(loggedUser);
-  }, []);
+  const [error, setError] = useState(false);
+  const setUserLoginAtom = useSetRecoilState(isLoginAtom);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(Validate(formValues));
     setIsSubmit(true);
-
-    // const loggedUser = JSON.parse(localStorage.getItem("registeredUserList"));
-    const foundIndex = users.findIndex(
-      (user) =>
-        user.email === formValues.email && user.password === formValues.password
-    );
-    const found = users.find(
-      (user) =>
-        user.email === formValues.email && user.password === formValues.password
-    );
-    console.log(foundIndex);
-    if (found) {
-      alert(`Welcome ${found.email}`);
-      localStorage.setItem(
-        "loggedInUser",
-        JSON.stringify({ ...users[foundIndex] })
-      );
-      navigate("/");
-    } else {
-      alert("wrong Credentials");
+    setError(false);
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        username: formValues.username,
+        password: formValues.password,
+      });
+      setUserLoginAtom(true);
+      res.data && navigate("/");
+    } catch (err) {
+      setError(true);
     }
   };
 
@@ -58,16 +45,16 @@ function Login() {
       ) : null}
       <span className="loginTitle">Login</span>
       <form className="loginForm" onSubmit={handleSubmit}>
-        <label>Email</label>
+        <label>User Name</label>
         <input
-          className="loginInput"
           type="text"
-          name="email"
-          placeholder="Enter your email..."
-          value={formValues.email}
+          className="loginInput"
+          name="username"
+          placeholder="Enter your username..."
+          value={formValues.username}
           onChange={handleChange}
         />
-        <p style={{ color: "red" }}>{formErrors.email}</p>
+        <p style={{ color: "red" }}>{formErrors.username}</p>
         <label>Password</label>
         <input
           className="loginInput"
@@ -83,6 +70,11 @@ function Login() {
       <Link className="link" to="/Register">
         <button className="loginRegisterButton">Register</button>
       </Link>
+      {error && (
+        <span style={{ color: "red", marginTop: "10px" }}>
+          Something went wrong!
+        </span>
+      )}
     </div>
   );
 }

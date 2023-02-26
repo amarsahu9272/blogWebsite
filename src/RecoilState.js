@@ -12,3 +12,8 @@ export const selectFile = atom({
   key: "selectedFile",
   default: null,
 });
+
+export const isLoginAtom = atom({
+  key: "isLogin",
+  default: false,
+});

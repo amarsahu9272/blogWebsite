@@ -2,8 +2,15 @@ import React from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 import profilePic from "../../utils/Amr.jpg";
+import { useRecoilValue } from "recoil";
+import { isLoginAtom } from "../../RecoilState";
 function Header() {
   const navigate = useNavigate();
+  const isuserlogin = useRecoilValue(isLoginAtom);
+
+  const handleLogout = () => {
+    navigate('/Register');
+  };
   return (
     <div className="header">
       <div className="headerLeft">
@@ -30,12 +37,31 @@ function Header() {
               WRITE
             </Link>
           </li>
+          <li className="headerListItem" onClick={handleLogout}>
+            {isuserlogin && "LOGOUT"}
+          </li>
         </ul>
       </div>
       <div className="headerRight">
-        <Link className="link" to="/settings">
-          <img className="headerImg" src={profilePic} alt="" />
-        </Link>
+        {isuserlogin ? (
+          <Link className="link" to="/settings">
+            <img className="headerImg" src={profilePic} alt="" />
+          </Link>
+          
+        ) : (
+          <ul className="headerList">
+            <li className="headerListItem">
+              <Link className="link" to="/login">
+                LOGIN
+              </Link>
+            </li>
+            <li className="headerListItem">
+              <Link className="link" to="/register">
+                REGISTER
+              </Link>
+            </li>
+          </ul>
+        )}
 
         {/* <ul className="headerList">
           <li className="headerListItem">
