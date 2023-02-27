@@ -1,8 +1,7 @@
 import React from "react";
 import Sidebar from "../../component/sidebar/Sidebar";
 import "./Settings.css";
-import { useContext, useState } from "react";
-// import { Context } from "../../context/Context";
+import {  useState } from "react";
 import axios from "axios";
 import { Validate } from "../../utils/Validate";
 
@@ -25,13 +24,12 @@ function Settings() {
   const [file, setFile] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  // const { user, dispatch } = useContext(Context);
   const PF = "http://localhost:5000/images/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(Validate(formValues));
-    // dispatch({ type: "UPDATE_START" });
+    console.log("UPDATE_START")
     const updatedUser = {
       userId: "user._id",
       name: formValues.name,
@@ -55,9 +53,9 @@ function Settings() {
         updatedUser
       );
       setSuccess(true);
-      // dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
+      console.log("UPDATE_SUCCESS")
     } catch (err) {
-      // dispatch({ type: "UPDATE_FAILURE" });
+      console.log("UPDATE_FAILURE")
     }
   };
   return (
@@ -65,7 +63,7 @@ function Settings() {
       <div className="settingsWrapper">
         <div className="settingsTitle">
           <span className="settingsUpdateTitle">Update Your Account</span>
-          <span className="settingsDeleteTitle">Delete Account</span>
+          {/* <span className="settingsDeleteTitle">Delete Account</span> */}
         </div>
         <form className="settingsForm" onSubmit={handleSubmit}>
           <label>Profile Picture</label>
@@ -111,15 +109,15 @@ function Settings() {
             onChange={handleChange}
           />
           <p style={{ color: "red" }}>{formErrors.email}</p>
-          <label>Password</label>
+          <label>Phone</label>
           <input
-            type="password"
-            name="password"
-            // placeholder="********"
-            value={formValues.password}
+            type="tel"
+            name="tel"
+            // placeholder={user.tel}
+            value={formValues.tel}
             onChange={handleChange}
           />
-          <p style={{ color: "red" }}>{formErrors.password}</p>
+          <p style={{ color: "red" }}>{formErrors.tel}</p>
           <button className="settingsSubmit" type="submit">
             Update
           </button>

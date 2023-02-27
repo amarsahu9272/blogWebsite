@@ -19,7 +19,11 @@
     display: flex;
     align-items: center;
 }
-
+.mediaIcon{
+    font-size: 20px;
+    margin-left: 10px;
+    color: lightcoral
+}
 .writeIcon {
     width: 25px;
     height: 25px;

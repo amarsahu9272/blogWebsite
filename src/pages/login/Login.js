@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Validate } from "../../utils/Validate";
-
 import axios from "axios";
 import "./Login.css";
+import { useSetRecoilState } from "recoil";
+import { isLoginAtom } from "../../RecoilState";
 
 function Login() {
   const navigate = useNavigate();
@@ -12,7 +13,8 @@ function Login() {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [error, setError] = useState(false);
-
+  const setUserLogin = useSetRecoilState(isLoginAtom);
+  const [response, setResponse] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,15 +31,20 @@ function Login() {
         username: formValues.username,
         password: formValues.password,
       });
-      res.data && navigate("/");
+      console.log("responsedata",res.data);
+      setUserLogin(true);
+      setResponse(res.data);
+      res.data &&
+        setTimeout(() => {
+          navigate("/");
+        }, "2000");
     } catch (err) {
       setError(true);
     }
   };
-
   return (
     <div className="login">
-      {Object.keys(formErrors).length === 0 && isSubmit ? (
+      {response ? (
         <div style={{ color: "green" }}>Signed in successfully</div>
       ) : null}
       <span className="loginTitle">Login</span>
@@ -62,15 +69,16 @@ function Login() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.password}</p>
-        <button className="loginButton" type="submit" 
-        >Login</button>
+        <button className="loginButton" type="submit">
+          Login
+        </button>
       </form>
       <Link className="link" to="/Register">
         <button className="loginRegisterButton">Register</button>
       </Link>
       {error && (
         <span style={{ color: "red", marginTop: "10px" }}>
-          Something went wrong!
+          Wrong credentials!
         </span>
       )}
     </div>

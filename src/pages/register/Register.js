@@ -19,6 +19,8 @@ function Register() {
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [response, setResponse] = useState("");
+
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value || "" });
@@ -37,32 +39,16 @@ function Register() {
         tel: formValues.tel,
         password: formValues.password,
       });
-      res.data && navigate("../login/Login");
+      setResponse(res.data)
+      res.data && setTimeout(() => {navigate("../login/Login")}, "2000");
     } catch (err) {
       setError(true);
     }
-
-    // const registerData = await fetch(
-    //   "http://localhost:5000/api/auth/register",
-    //   {
-    //     body: JSON.stringify({
-    //       name: formValues.name,
-    //       username: formValues.username,
-    //       email: formValues.email,
-    //       tel: formValues.tel,
-    //       password: formValues.password,
-    //     }),
-    //     method: "post",
-    //     headers: { "Content-Type": "application/json" },
-    //   }
-    // );
-    // const result = await registerData.json();
-    // console.log(result);
   };
 
   return (
     <div className="register">
-      {Object.keys(formErrors).length === 0 && isSubmit ? (
+      {response && Object.keys(formErrors).length === 0 && isSubmit ? (
         <div style={{ color: "green" }}>Registered successfully</div>
       ) : null}
       <span className="registerTitle">Register</span>
