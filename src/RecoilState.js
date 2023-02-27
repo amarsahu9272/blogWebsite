@@ -15,5 +15,9 @@ export const selectFile = atom({
 
 export const isLoginAtom = atom({
   key: "isLogin",
-  default: false,
+  default: true,
+});
+export const userDataAtom = atom({
+  key: "userData",
+  default: "",
 });

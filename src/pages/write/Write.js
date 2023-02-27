@@ -1,18 +1,20 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-
 import "./Write.css";
+import { useRecoilValue } from "recoil";
+import { userDataAtom } from "../../RecoilState";
 
 function Write() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [file, setFile] = useState(null);
+  const userDataFromRecoil = useRecoilValue(userDataAtom);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newPost = {
-      username: "user.username",
+      username: userDataFromRecoil?.username,
       title,
       desc,
     };
@@ -24,13 +26,18 @@ function Write() {
       newPost.photo = filename;
       try {
         await axios.post("http://localhost:5000/api/upload", data);
-      } catch (err) {}
+      } catch (err) {
+        console.log("UPLOADE_SUCCESS");
+      }
     }
     try {
       const res = await axios.post("http://localhost:5000/api/posts", newPost);
       window.location.replace("/post/" + res.data._id);
-    } catch (err) {}
+    } catch (err) {
+      console.log("NEWPOST_SUCCESS");
+    }
   };
+  // console.log(userDataFromRecoil?.name);
   return (
     <div className="write">
       {file && (

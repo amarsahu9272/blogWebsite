@@ -1,23 +1,26 @@
 import React from "react";
 import "./Header.css";
-import { useRecoilValue } from "recoil";
-import { isLoginAtom } from "../../RecoilState";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userDataAtom } from "../../RecoilState";
 import { Link, useNavigate } from "react-router-dom";
-import profilePic from "../../utils/Amr.jpg";
+// import profilePic from "../../utils/Amr.jpg";
 function Header() {
   const PF = "http://localhost:5000/images/";
   const navigate = useNavigate();
-  const isuserlogin = useRecoilValue(isLoginAtom);
+  // const isuserlogin = useRecoilValue(isLoginAtom);
+  const userDataFromRecoil = useRecoilValue(userDataAtom);
+  const setuserDataToRecoil =useSetRecoilState(userDataAtom)
 
   const handleLogout = () => {
-    navigate("/Register");
+    setuserDataToRecoil({})
+    navigate("/Login");
   };
   return (
     <div className="header">
       <div className="headerLeft">
-        <div className="headerIcon" onClick={() => navigate(-1)}>
+        {/* <div className="headerIcon" onClick={() => navigate(-1)}>
           <i className="fas fa-long-arrow-left"></i>
-        </div>
+        </div> */}
         <Link className="link headerIcon" to="/">
           <img
             className="headerLogoImg"
@@ -41,10 +44,10 @@ function Header() {
         </ul>
       </div>
       <div className="headerRight">
-        {isuserlogin ? (
+        {userDataFromRecoil ? (
           <div className="headerRight">
             <Link className="link" to="/settings">
-              <img className="headerImg" src={profilePic} alt="" />
+              <img className="headerImg" src={PF+userDataFromRecoil.profilePic} alt="" />
             </Link>
             <ul className="headerList">
               <li className="headerListItem" onClick={handleLogout}>

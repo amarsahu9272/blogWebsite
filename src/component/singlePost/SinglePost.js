@@ -4,16 +4,19 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { useRecoilValue } from "recoil";
+import { userDataAtom } from "../../RecoilState";
 
 function SinglePost() {
+  const PF = "http://localhost:5000/images/";
   const location = useLocation();
   const [post, setPost] = useState({});
-  const PF = "http://localhost:5000/images/";
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateMode, setUpdateMode] = useState(false);
   const path = location.pathname.split("/")[2];
-  console.log(path)
+  const userDataFromRecoil = useRecoilValue(userDataAtom);
+  // console.log(path)
 
   useEffect(() => {
     const getPost = async () => {
@@ -28,7 +31,7 @@ function SinglePost() {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
-        data: { username: "user.username "},
+        data: { username: userDataFromRecoil.username },
       });
       window.location.replace("/");
     } catch (err) {}
@@ -37,13 +40,15 @@ function SinglePost() {
   const handleUpdate = async () => {
     try {
       await axios.put(`http://localhost:5000/api/posts/${post._id}`, {
-        username: "user.username",
+        username: userDataFromRecoil?.username,
         title,
         desc,
       });
       setUpdateMode(false);
     } catch (err) {}
   };
+  // console.log(post)
+  // console.log("userData",userDataFromRecoil)
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
@@ -61,7 +66,7 @@ function SinglePost() {
         ) : (
           <h1 className="singlePostTitle">
             {title}
-            {post.username === "user?.username "&& (
+            {post.username === userDataFromRecoil.username && (
               <div className="singlePostEdit">
                 <i
                   className="singlePostIcon far fa-edit"

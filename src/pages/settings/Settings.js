@@ -1,9 +1,11 @@
 import React from "react";
 import Sidebar from "../../component/sidebar/Sidebar";
 import "./Settings.css";
-import {  useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Validate } from "../../utils/Validate";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userDataAtom } from "../../RecoilState";
 
 function Settings() {
   const [formValues, setFormValues] = useState({
@@ -16,26 +18,42 @@ function Settings() {
     joinedDate: `${new Date().getMonth() + 1}-2023`,
     posts: [],
   });
+  const PF = "http://localhost:5000/images/";
   const [formErrors, setFormErrors] = useState({});
+  const userDataFromRecoil = useRecoilValue(userDataAtom);
+  const setUserDataToRecoil = useSetRecoilState(userDataAtom);
+  const [file, setFile] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value || "" });
   };
-  const [file, setFile] = useState(null);
-  const [success, setSuccess] = useState(false);
-
-  const PF = "http://localhost:5000/images/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsSubmit(true);
     setFormErrors(Validate(formValues));
-    console.log("UPDATE_START")
+    console.log("UPDATE_START");
     const updatedUser = {
-      userId: "user._id",
-      name: formValues.name,
-      username: formValues.username,
-      email: formValues.email,
-      password: formValues.password,
+      userId: userDataFromRecoil._id,
+      name:
+        Object.keys(formErrors).length === 0 && isSubmit
+          ? formValues.name
+          : userDataFromRecoil.name,
+      username:
+        Object.keys(formErrors).length === 0 && isSubmit
+          ? formValues.username
+          : userDataFromRecoil.name,
+      email:
+        Object.keys(formErrors).length === 0 && isSubmit
+          ? formValues.email
+          : userDataFromRecoil.name,
+      tel:
+        Object.keys(formErrors).length === 0 && isSubmit
+          ? formValues.tel
+          : userDataFromRecoil.name,
     };
     if (file) {
       const data = new FormData();
@@ -43,21 +61,30 @@ function Settings() {
       data.append("name", filename);
       data.append("file", file);
       updatedUser.profilePic = filename;
+      console.log(data);
       try {
         await axios.post("http://localhost:5000/api/upload", data);
-      } catch (err) {}
+      } catch (err) {
+        console.log("UPLOADED_FAILURE");
+      }
     }
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/users/" + "user._id",
+        "http://localhost:5000/api/users/" + userDataFromRecoil._id,
         updatedUser
       );
+      // console.log(res.data);
+      setUserDataToRecoil(res.data);
       setSuccess(true);
-      console.log("UPDATE_SUCCESS")
+      console.log("UPDATE_SUCCESS");
     } catch (err) {
-      console.log("UPDATE_FAILURE")
+      console.log("UPDATE_FAILURE");
     }
   };
+
+  // console.log(file?.name)
+  // console.log(new FormData())
+
   return (
     <div className="settings">
       <div className="settingsWrapper">
@@ -69,7 +96,11 @@ function Settings() {
           <label>Profile Picture</label>
           <div className="settingsPP">
             <img
-              src={file ? URL.createObjectURL(file) : PF + "user.profilePic"}
+              src={
+                file
+                  ? URL.createObjectURL(file)
+                  : PF + userDataFromRecoil.profilePic
+              }
               alt=""
             />
             <label htmlFor="fileInput">
@@ -86,7 +117,7 @@ function Settings() {
           <input
             type="text"
             name="name"
-            // placeholder={user.name}
+            placeholder={userDataFromRecoil.name}
             value={formValues.name}
             onChange={handleChange}
           />
@@ -95,7 +126,7 @@ function Settings() {
           <input
             type="text"
             name="username"
-            // placeholder={user.username}
+            placeholder={userDataFromRecoil.username}
             value={formValues.username}
             onChange={handleChange}
           />
@@ -104,7 +135,7 @@ function Settings() {
           <input
             type="email"
             name="email"
-            // placeholder={user.email}
+            placeholder={userDataFromRecoil.email}
             value={formValues.email}
             onChange={handleChange}
           />
@@ -113,7 +144,7 @@ function Settings() {
           <input
             type="tel"
             name="tel"
-            // placeholder={user.tel}
+            placeholder={userDataFromRecoil.tel}
             value={formValues.tel}
             onChange={handleChange}
           />

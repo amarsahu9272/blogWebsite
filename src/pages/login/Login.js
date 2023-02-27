@@ -4,16 +4,18 @@ import { Validate } from "../../utils/Validate";
 import axios from "axios";
 import "./Login.css";
 import { useSetRecoilState } from "recoil";
-import { isLoginAtom } from "../../RecoilState";
+import { isLoginAtom, userDataAtom } from "../../RecoilState";
 
 function Login() {
   const navigate = useNavigate();
   const initialValues = { username: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
+  const [, setIsSubmit] = useState(false);
   const [error, setError] = useState(false);
-  const setUserLogin = useSetRecoilState(isLoginAtom);
+  const setUserLoginInRecoil = useSetRecoilState(isLoginAtom);
+  const setUserDataInRecoil = useSetRecoilState(userDataAtom);
+
   const [response, setResponse] = useState("");
 
   const handleChange = (e) => {
@@ -31,8 +33,9 @@ function Login() {
         username: formValues.username,
         password: formValues.password,
       });
-      console.log("responsedata",res.data);
-      setUserLogin(true);
+      // console.log("responsedata",res.data);
+      setUserDataInRecoil(res.data)
+      setUserLoginInRecoil(true);
       setResponse(res.data);
       res.data &&
         setTimeout(() => {
