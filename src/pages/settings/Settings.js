@@ -2,7 +2,7 @@ import React from "react";
 import Sidebar from "../../component/sidebar/Sidebar";
 import "./Settings.css";
 import { useContext, useState } from "react";
-import { Context } from "../../context/Context";
+// import { Context } from "../../context/Context";
 import axios from "axios";
 import { Validate } from "../../utils/Validate";
 
@@ -25,15 +25,15 @@ function Settings() {
   const [file, setFile] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const { user, dispatch } = useContext(Context);
+  // const { user, dispatch } = useContext(Context);
   const PF = "http://localhost:5000/images/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(Validate(formValues));
-    dispatch({ type: "UPDATE_START" });
+    // dispatch({ type: "UPDATE_START" });
     const updatedUser = {
-      userId: user._id,
+      userId: "user._id",
       name: formValues.name,
       username: formValues.username,
       email: formValues.email,
@@ -51,13 +51,13 @@ function Settings() {
     }
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/users/" + user._id,
+        "http://localhost:5000/api/users/" + "user._id",
         updatedUser
       );
       setSuccess(true);
-      dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
+      // dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
     } catch (err) {
-      dispatch({ type: "UPDATE_FAILURE" });
+      // dispatch({ type: "UPDATE_FAILURE" });
     }
   };
   return (
@@ -71,7 +71,7 @@ function Settings() {
           <label>Profile Picture</label>
           <div className="settingsPP">
             <img
-              src={file ? URL.createObjectURL(file) : PF + user.profilePic}
+              src={file ? URL.createObjectURL(file) : PF + "user.profilePic"}
               alt=""
             />
             <label htmlFor="fileInput">
@@ -88,7 +88,7 @@ function Settings() {
           <input
             type="text"
             name="name"
-            placeholder={user.name}
+            // placeholder={user.name}
             value={formValues.name}
             onChange={handleChange}
           />
@@ -97,7 +97,7 @@ function Settings() {
           <input
             type="text"
             name="username"
-            placeholder={user.username}
+            // placeholder={user.username}
             value={formValues.username}
             onChange={handleChange}
           />
@@ -106,7 +106,7 @@ function Settings() {
           <input
             type="email"
             name="email"
-            placeholder={user.email}
+            // placeholder={user.email}
             value={formValues.email}
             onChange={handleChange}
           />
@@ -115,7 +115,7 @@ function Settings() {
           <input
             type="password"
             name="password"
-            placeholder="********"
+            // placeholder="********"
             value={formValues.password}
             onChange={handleChange}
           />

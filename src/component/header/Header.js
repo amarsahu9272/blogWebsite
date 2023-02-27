@@ -1,15 +1,16 @@
 import React from "react";
 import "./Header.css";
+import { useRecoilValue } from "recoil";
+import { isLoginAtom } from "../../RecoilState";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { Context } from "../../context/Context";
+import profilePic from "../../utils/Amr.jpg";
 function Header() {
   const PF = "http://localhost:5000/images/";
-  const { user, dispatch } = useContext(Context);
   const navigate = useNavigate();
+  const isuserlogin = useRecoilValue(isLoginAtom);
 
   const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
+    navigate("/Register");
   };
   return (
     <div className="header">
@@ -37,16 +38,22 @@ function Header() {
               WRITE
             </Link>
           </li>
-          <li className="headerListItem" onClick={handleLogout}>
-            {user && "LOGOUT"}
-          </li>
         </ul>
       </div>
       <div className="headerRight">
-        {user ? (
-          <Link className="link" to="/settings">
-            <img className="headerImg" src={PF + user.profilePic} alt="" />
-          </Link>
+        {isuserlogin ? (
+          <div className="headerRight">
+            <Link className="link" to="/settings">
+              <img className="headerImg" src={profilePic} alt="" />
+            </Link>
+            <ul className="headerList">
+              <li className="headerListItem" onClick={handleLogout}>
+                <Link className="link" to="/login">
+                  LOGOUT
+                </Link>
+              </li>
+            </ul>
+          </div>
         ) : (
           <ul className="headerList">
             <li className="headerListItem">

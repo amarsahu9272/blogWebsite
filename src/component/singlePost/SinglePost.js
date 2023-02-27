@@ -3,7 +3,7 @@ import "./SinglePost.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "../../context/Context";
+// import { Context } from "../../context/Context";
 import { useLocation } from "react-router";
 
 function SinglePost() {
@@ -11,7 +11,7 @@ function SinglePost() {
   const path = location.pathname.split("/")[2];
   const [post, setPost] = useState({});
   const PF = "http://localhost:5000/images/";
-  const { user } = useContext(Context);
+  // const { user } = useContext(Context);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateMode, setUpdateMode] = useState(false);
@@ -29,7 +29,7 @@ function SinglePost() {
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
-        data: { username: user.username },
+        data: { username: "user.username "},
       });
       window.location.replace("/");
     } catch (err) {}
@@ -38,7 +38,7 @@ function SinglePost() {
   const handleUpdate = async () => {
     try {
       await axios.put(`http://localhost:5000/api/posts/${post._id}`, {
-        username: user.username,
+        username: "user.username",
         title,
         desc,
       });
@@ -62,7 +62,7 @@ function SinglePost() {
         ) : (
           <h1 className="singlePostTitle">
             {title}
-            {post.username === user?.username && (
+            {post.username === "user?.username "&& (
               <div className="singlePostEdit">
                 <i
                   className="singlePostIcon far fa-edit"

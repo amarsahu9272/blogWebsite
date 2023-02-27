@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Validate } from "../../utils/Validate";
-import { Context } from "../../context/Context";
+
 import axios from "axios";
 import "./Login.css";
 
@@ -12,7 +12,6 @@ function Login() {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [error, setError] = useState(false);
-  const { dispatch, isFetching } = useContext(Context);
 
 
   const handleChange = (e) => {
@@ -25,16 +24,13 @@ function Login() {
     setFormErrors(Validate(formValues));
     setIsSubmit(true);
     setError(false);
-    dispatch({ type: "LOGIN_START" });
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
         username: formValues.username,
         password: formValues.password,
       });
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       res.data && navigate("/");
     } catch (err) {
-      dispatch({ type: "LOGIN_FAILURE" });
       setError(true);
     }
   };
@@ -66,7 +62,8 @@ function Login() {
           onChange={handleChange}
         />
         <p style={{ color: "red" }}>{formErrors.password}</p>
-        <button className="loginButton" type="submit" disabled={isFetching}>Login</button>
+        <button className="loginButton" type="submit" 
+        >Login</button>
       </form>
       <Link className="link" to="/Register">
         <button className="loginRegisterButton">Register</button>
