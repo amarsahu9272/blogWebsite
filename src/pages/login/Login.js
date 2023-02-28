@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Validate } from "../../utils/Validate";
 import axios from "axios";
@@ -34,9 +34,10 @@ function Login() {
         password: formValues.password,
       });
       // console.log("responsedata",res.data);
-      setUserDataInRecoil(res.data)
+      setUserDataInRecoil(res.data);
       setUserLoginInRecoil(true);
       setResponse(res.data);
+
       res.data &&
         setTimeout(() => {
           navigate("/");
@@ -45,6 +46,14 @@ function Login() {
       setError(true);
     }
   };
+
+  useEffect(() => {
+    if (response) {
+      localStorage.setItem("loggedInUserData", JSON.stringify(response));
+    }
+  }, [response]);
+
+  // console.log(response);
   return (
     <div className="login">
       {response ? (

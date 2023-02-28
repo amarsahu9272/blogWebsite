@@ -27,7 +27,7 @@ function Settings() {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value || "" });
+    setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {

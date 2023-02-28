@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userDataAtom } from "../../RecoilState";
@@ -7,14 +7,22 @@ import { Link, useNavigate } from "react-router-dom";
 function Header() {
   const PF = "http://localhost:5000/images/";
   const navigate = useNavigate();
+  const [userData, setUserData] = useState("");
   // const isuserlogin = useRecoilValue(isLoginAtom);
   const userDataFromRecoil = useRecoilValue(userDataAtom);
-  const setuserDataToRecoil =useSetRecoilState(userDataAtom)
+  const setuserDataToRecoil = useSetRecoilState(userDataAtom);
 
   const handleLogout = () => {
-    setuserDataToRecoil({})
+    setuserDataToRecoil({});
     navigate("/Login");
   };
+
+  useEffect(() => {
+    const userDataFromStorage = JSON.parse(
+      localStorage.getItem("loggedInUserData")
+    );
+    setUserData(userDataFromStorage);
+  }, []);
   return (
     <div className="header">
       <div className="headerLeft">
@@ -44,10 +52,14 @@ function Header() {
         </ul>
       </div>
       <div className="headerRight">
-        {userDataFromRecoil ? (
+        {userData ? (
           <div className="headerRight">
             <Link className="link" to="/settings">
-              <img className="headerImg" src={PF+userDataFromRecoil.profilePic} alt="" />
+              <img
+                className="headerImg"
+                src={PF + userData.profilePic}
+                alt=""
+              />
             </Link>
             <ul className="headerList">
               <li className="headerListItem" onClick={handleLogout}>
